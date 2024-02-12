@@ -1,0 +1,47 @@
+/* Set the width of the sidebar */
+.sidebar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #343a40; /* Bootstrap's dark color */
+    padding-top: 10px;
+  }
+  
+  /* Style sidebar links */
+  .sidebar a {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    display: block;
+  }
+  .sidebar h2 {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
+    display: block;
+    margin-bottom: 50px;
+  }
+  
+  /* Change color on hover */
+  .sidebar .sidebtn:hover {
+    background-color: #454d55; /* Bootstrap's darker color */
+  }
+  
+  /* Main content */
+  .content {
+    margin-left: 250px;
+    padding: 20px;
+  }
+/* logout button */
+  .logout-btn {
+    position: absolute;
+    bottom: 0px;
+    width: 50%;
+    margin-left: 25%;
+    
+  }
