@@ -21,8 +21,30 @@
     <a class="sidebtn" href="{{url_for('registerdUsers')}}"><i class="bi bi-people-fill"></i> Registerd Users</a>
     <a class="sidebtn" href="{{url_for('history')}}"><i class="bi bi-clock-history"></i> History</a>
     <a class="sidebtn" href="{{url_for('newUser')}}"><i class="bi bi-person-fill-add"></i> New user</a>
-    <a class="logout-btn btn btn-danger" href="{{url_for('logout')}}"><i class="bi bi-box-arrow-right"></i> Logout</a>
-    <a class="sittings-btn btn btn-secondary" href="{{url_for('logout')}}"><i class="bi bi-gear"></i></a>
+    <button class="logout-btn btn btn-danger" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="bi bi-box-arrow-right"></i> Logout</button>
+    <button class="sittings-btn btn btn-secondary" data-toggle="modal" data-target=".settings"><i class="bi bi-gear"></button>
+  </div>
+
+  <!-- logout modal -->
+<div class="modal bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header"><h4>Logout <i class="fa fa-lock"></i></h4></div>
+      <div class="modal-body"><i class="fa fa-question-circle"></i> Are you sure you want to log-off?</div>
+      <div class="modal-footer"><a href="javascript:;" class="btn btn-danger btn-block">Logout</a></div>
+    </div>
+  </div>
+</div>
+
+  <!-- settings modal -->
+  <div class="modal settings" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header"><h4>settings <i class="fa fa-lock"></i></h4></div>
+        <div class="modal-body"><i class="fa fa-question-circle"></i> ...</div>
+        <div class="modal-footer"><a href="javascript:;" class="btn btn-secondary btn-block">done</a></div>
+      </div>
+    </div>
   </div>
 
   <!-- Page content -->
