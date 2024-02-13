@@ -40,8 +40,14 @@
 /* logout button */
   .logout-btn {
     position: absolute;
-    bottom: 0px;
-    width: 50%;
-    margin-left: 25%;
+    bottom: 2%;
+    width: 55%;
+    margin-left: 35%;
     
+  }
+  .sittings-btn{
+    position: absolute;
+    bottom: 2%;
+    width: 25%;
+    margin-left: 5%;
   }
