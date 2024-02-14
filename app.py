@@ -4,7 +4,11 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return render_template("dashboard.html") #go to dashboard by default
+    return render_template("login.html") #go to login by default
+
+@app.route("/login")
+def login():
+    return render_template("login.html") 
 
 @app.route("/dashboard")
 def dashboard():

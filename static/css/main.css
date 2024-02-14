@@ -51,3 +51,28 @@
     width: 25%;
     margin-left: 5%;
   }
+
+  .login-body{
+    background-color: #343a40; /* Bootstrap's dark color */
+    padding: 2%;
+  }
+  .login-container{
+    border-radius: 30px;
+    padding: 5%;
+  }
+
+  .login-btn{
+    width: 100%;
+    margin-top: 5%;
+    margin-bottom:1%;
+  }
+  .login-body a {
+    margin-left: 48%;
+    margin-right: 52%;
+  }
+  .login-body h2{
+    color: white;
+    text-align: center;
+
+  }
+
