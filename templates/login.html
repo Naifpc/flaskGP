@@ -17,14 +17,14 @@
     <div class="container-header">
       <h3 class="container-title">Login</h2>
     </div>
-    <form>
-      <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
-      <input type="email" class="form-control" id="inputEmail3">
-      <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
-      <input type="password" class="form-control" id="inputPassword3">
-      <button type="submit" class="btn btn-primary btn-lg login-btn"><i class="bi bi-box-arrow-in-right"></i> Sign in</button>
+    <form action="{{url_for('login')}}" method="post">
+      <label class="col-sm-2 col-form-label">Username</label>
+      <input type="text" class="form-control" id="inputEmail3" name="username">
+      <label class="col-sm-2 col-form-label">Password</label>
+      <input type="password" class="form-control" id="inputPassword3" name="password">
+      <button type="submit" class="btn btn-primary btn-lg login-btn"><i class="bi bi-box-arrow-in-right" value="submit"></i> Sign in</button>
     </form>
-    <a href="{{url_for('dashboard')}}" class="link-secondary ">or,skip</a></p>
+
   </div>
   </div>
 
