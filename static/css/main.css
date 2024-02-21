@@ -1,78 +1,86 @@
 /* Set the width of the sidebar */
 .sidebar {
-    height: 100%;
-    width: 250px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: #343a40; /* Bootstrap's dark color */
-    padding-top: 10px;
-  }
-  
-  /* Style sidebar links */
-  .sidebar a {
-    padding: 10px 15px;
-    text-decoration: none;
-    font-size: 20px;
-    color: white;
-    display: block;
-  }
-  .sidebar h2 {
-    padding: 10px 15px;
-    text-decoration: none;
-    font-size: 30px;
-    font-weight: bold;
-    color: white;
-    display: block;
-    margin-bottom: 50px;
-  }
-  
-  /* Change color on hover */
-  .sidebar .sidebtn:hover {
-    background-color: #454d55; /* Bootstrap's darker color */
-  }
-  
-  /* Main content */
-  .content {
-    margin-left: 250px;
-    padding: 20px;
-  }
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #343a40;
+  /* Bootstrap's dark color */
+  padding-top: 10px;
+}
+
+/* Style sidebar links */
+.sidebar a {
+  padding: 10px 15px;
+  text-decoration: none;
+  font-size: 20px;
+  color: white;
+  display: block;
+}
+
+.sidebar h2 {
+  padding: 10px 15px;
+  text-decoration: none;
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
+  display: block;
+  margin-bottom: 50px;
+}
+
+/* Change color on hover */
+.sidebar .sidebtn:hover {
+  background-color: #454d55;
+  /* Bootstrap's darker color */
+}
+
+/* Main content */
+.content {
+  margin-left: 250px;
+  padding: 20px;
+}
+
 /* logout button */
-  .logout-btn {
-    position: absolute;
-    bottom: 2%;
-    width: 55%;
-    margin-left: 35%;
-    
-  }
-  .sittings-btn{
-    position: absolute;
-    bottom: 2%;
-    width: 25%;
-    margin-left: 5%;
-  }
+.logout-btn {
+  position: absolute;
+  bottom: 2%;
+  width: 55%;
+  margin-left: 35%;
 
-  .login-body{
-    background-color: #343a40; /* Bootstrap's dark color */
-    padding: 2%;
-  }
-  .login-container{
-    border-radius: 30px;
-    padding: 5%;
-  }
+}
 
-  .login-btn{
-    width: 100%;
-    margin-top: 5%;
-    margin-bottom:1%;
-  }
-  .login-body a {
-    margin-left: 48%;
-    margin-right: 52%;
-  }
-  .login-body h2{
-    color: white;
-    text-align: center;
+.sittings-btn {
+  position: absolute;
+  bottom: 2%;
+  width: 25%;
+  margin-left: 5%;
+}
 
-  }
+.login-body {
+  background-color: #343a40;
+  /* Bootstrap's dark color */
+  padding: 2%;
+}
 
+.login-container {
+  border-radius: 30px;
+  padding: 5%;
+}
+
+.login-btn {
+  width: 100%;
+  margin-top: 5%;
+  margin-bottom: 1%;
+}
+
+.login-body a {
+  margin-left: 48%;
+  margin-right: 52%;
+}
+
+.login-body h2 {
+  color: white;
+  text-align: center;
+
+}
