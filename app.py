@@ -79,6 +79,16 @@ def logout():
     session.pop("password",None)
     return redirect(url_for("login"))
 
+@app.route("/deleteUser", methods=["POST", "GET"]) #Delete username and password from db then go to registerdUserss
+def deleteUser():
+    if request.method == "POST":
+        user = request.form["delete"]
+        user_to_delete = users.query.filter_by(name=user).first()
+        if user_to_delete:
+            db.session.delete(user_to_delete)
+            db.session.commit()
+        return redirect(url_for("registerdUsers"))
+
 
 if __name__ == "__main__":
     with app.app_context():
