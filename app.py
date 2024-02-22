@@ -41,8 +41,8 @@ def login():
         if found_user:
             session["user"] = found_user.name   #if user was found save usernam to session
         else:
-            usr=users(user,password)
-            db.session.add(usr)
+            new_user=users(user,password)
+            db.session.add(new_user)
             db.session.commit() #if user not found then add new user to data base db
 
 
@@ -69,9 +69,17 @@ def registerdUsers():
 def history():
     return render_template("history.html")
 
-@app.route("/newUser")
+@app.route("/newUser",methods=["POST","GET"])
 def newUser():
-    return render_template("newUser.html")
+    if request.method == "POST":
+        user = request.form["username"]
+        password = request.form["password"]
+        new_user=users(user,password)
+        db.session.add(new_user)
+        db.session.commit() 
+        return redirect(url_for("newUser"))
+    else:
+        return render_template("newUser.html")
 
 @app.route("/logout") #Delete username and password from Session then go to login
 def logout():

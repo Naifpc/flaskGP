@@ -40,6 +40,9 @@
   margin-left: 250px;
   padding: 20px;
 }
+.nav-header {
+  margin-bottom: 1%;
+}
 
 /* logout button */
 .logout-btn {

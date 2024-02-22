@@ -3,13 +3,16 @@
 {% block head %}{% endblock %}
 
 {% block body %}
-<h2>New user</h2>
-<p>This is the main content of the page.</p>
-<form>
+<h2>New User</h2>
+<div class="nav-header">
+<a href="{{url_for('dashboard')}}" class="Info link link-underline link-underline-opacity-0">Dashboared</a><a  class="Info link link-underline link-underline-opacity-0 link-opacity-50">> New User</a>
+</div>
+<form action="{{url_for('newUser')}}" method="post">
     <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">user name</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-        <div id="emailHelp" class="form-text">Enter first and last name only</div>
+        <label for="exampleInputEmail1" class="form-label">User Name</label>
+        <input type="text" class="form-control" name="username">
+        <label for="exampleInputEmail1" class="form-label">Password</label>
+        <input type="password" class="form-control" name="password">
     </div>
    
     
@@ -18,7 +21,7 @@
         <label class="input-group-text" for="inputGroupFile02">Upload</label>
     </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Add User</button>
 
 </form>
 {% endblock %}
