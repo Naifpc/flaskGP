@@ -1,12 +1,29 @@
 from flask import Flask, render_template, url_for, request, redirect,session
-#import sqlalchemy
+from flask_sqlalchemy import SQLAlchemy
 from datetime import timedelta
 
 
 
 app = Flask(__name__)
 app.secret_key = "graduate"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.sqlite3'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.permanent_session_lifetime = timedelta(days=1) #keep session for one day
+
+#databasecode
+db = SQLAlchemy(app)
+
+class users(db.Model):
+    _id = db.Column("id", db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    password = db.Column(db.String(100))
+
+    def __init__(self, name, password):
+        self.name = name
+        self.password = password
+
+
+
 
 @app.route("/")
 def index():
@@ -19,6 +36,17 @@ def login():
         password = request.form["password"]
         session["user"]=user
         session["password"]=password # get username and password and save in session then go to dashboard
+
+        found_user =  users.query.filter_by(name=user).first() 
+        if found_user:
+            session["user"] = found_user.name   #if user was found save usernam to session
+        else:
+            usr=users(user,password)
+            db.session.add(usr)
+            db.session.commit() #if user not found then add new user to data base db
+
+
+
         return redirect(url_for("dashboard"))
     else:
         if "user" in session:
@@ -35,7 +63,7 @@ def dashboard():
 
 @app.route("/registerdUsers")
 def registerdUsers():
-    return render_template("registerdUsers.html")
+    return render_template("registerdUsers.html",values = users.query.all())
 
 @app.route("/history")
 def history():
@@ -53,4 +81,6 @@ def logout():
 
 
 if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
