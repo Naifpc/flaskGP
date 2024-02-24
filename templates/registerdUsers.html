@@ -13,7 +13,7 @@
     {% for item in values %}
     <div class="col">
         <div class="card h-100">
-            <img src="..." class="card-img-top" alt="...">
+            <image class="card-img-top" src="{{ url_for('static', filename='images/stock.jpg') }}"></image>
             <div class="card-body">
                 <h5 class="card-title">{{item.name}}</h5>
                 <p class="card-text"></p>
@@ -23,7 +23,7 @@
                 </form>
             </div>
             <div class="card-footer">
-                <small class="text-body-secondary">Last updated 3 mins ago</small>
+                <small class="text-body-secondary">Last updated at {{ item.updated_at.strftime("%b %d %Y %H:%M") }}</small>
             </div>
         </div>
     </div>

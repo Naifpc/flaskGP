@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, request, redirect,session
 from flask_sqlalchemy import SQLAlchemy
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 
 
@@ -17,10 +17,14 @@ class users(db.Model):
     _id = db.Column("id", db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     password = db.Column(db.String(100))
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now) 
 
-    def __init__(self, name, password):
+    def __init__(self, name, password, created_at, updated_at):
         self.name = name
         self.password = password
+        self.created_at = created_at
+        self.updated_at = updated_at
 
 
 
@@ -34,23 +38,25 @@ def login():
     if request.method == "POST":
         user = request.form["username"]
         password = request.form["password"]
-        session["user"]=user
-        session["password"]=password # get username and password and save in session then go to dashboard
+        session["user"]=user  # get username and save in session then go to dashboard
 
         found_user =  users.query.filter_by(name=user).first() 
         if found_user:
-            session["user"] = found_user.name   #if user was found save usernam to session
+            session["user"] = found_user.name   #if user was found save usernam to session and update "updated_at"
+            found_user.updated_at = datetime.now()
+            db.session.commit()
         else:
-            new_user=users(user,password)
+            created_at = datetime.now()  # Provide current timestamp for created_at
+            updated_at = datetime.now()  # Provide current timestamp for updated_at
+            new_user = users(user, password, created_at, updated_at)
             db.session.add(new_user)
             db.session.commit() #if user not found then add new user to data base db
-
-
+        
 
         return redirect(url_for("dashboard"))
     else:
         if "user" in session:
-           return redirect(url_for("dashboard")) #if user already in Session go to Dashboared
+            return redirect(url_for("dashboard")) #if user already in Session go to Dashboared
         return render_template("login.html") 
 
 @app.route("/dashboard")
@@ -74,7 +80,9 @@ def newUser():
     if request.method == "POST":
         user = request.form["username"]
         password = request.form["password"]
-        new_user=users(user,password)
+        created_at = datetime.now()  # Provide current timestamp for created_at
+        updated_at = datetime.now()  # Provide current timestamp for updated_at
+        new_user = users(user, password, created_at, updated_at)
         db.session.add(new_user)
         db.session.commit() 
         return redirect(url_for("newUser"))
