@@ -1,6 +1,7 @@
-from flask import Flask, render_template, url_for, request, redirect,session
+from flask import Flask, render_template, url_for, request, redirect,session,send_file
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
+from io import BytesIO
 
 
 
@@ -17,17 +18,17 @@ class users(db.Model):
     _id = db.Column("id", db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     password = db.Column(db.String(100))
+    image = db.Column(db.LargeBinary)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now) 
 
-    def __init__(self, name, password, created_at, updated_at):
+    def __init__(self, name, password, image, created_at, updated_at):
         self.name = name
         self.password = password
+        self.image = image
         self.created_at = created_at
         self.updated_at = updated_at
-
-
-
+        
 
 @app.route("/")
 def index():
@@ -38,6 +39,8 @@ def login():
     if request.method == "POST":
         user = request.form["username"]
         password = request.form["password"]
+        file = request.files["image"]
+        image= file.read()
         session["user"]=user  # get username and save in session then go to dashboard
 
         found_user =  users.query.filter_by(name=user).first() 
@@ -48,7 +51,7 @@ def login():
         else:
             created_at = datetime.now()  # Provide current timestamp for created_at
             updated_at = datetime.now()  # Provide current timestamp for updated_at
-            new_user = users(user, password, created_at, updated_at)
+            new_user = users(user, password, image, created_at, updated_at)
             db.session.add(new_user)
             db.session.commit() #if user not found then add new user to data base db
         
@@ -104,6 +107,11 @@ def deleteUser():
             db.session.delete(user_to_delete)
             db.session.commit()
         return redirect(url_for("registerdUsers"))
+    
+@app.route('/download/<upload_id>')
+def download(upload_id):
+    upload = users.query.filter_by(_id=upload_id).first()
+    return send_file(BytesIO(upload.image), mimetype='image/jpg')
 
 
 if __name__ == "__main__":
