@@ -73,8 +73,8 @@ def registerdUsers():
 
 @app.route("/history")
 def history():
-    return render_template("history.html")
-
+    return render_template("history.html",values = users.query.all())
+    
 @app.route("/newUser",methods=["POST","GET"])
 def newUser():
     if request.method == "POST":
