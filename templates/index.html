@@ -48,8 +48,19 @@
         <div class="modal-header">
           <h4>settings <i class="fa fa-lock"></i></h4>
         </div>
-        <div class="modal-body"><i class="fa fa-question-circle"></i> ...</div>
-        <div class="modal-footer"><a href="javascript:;" class="btn btn-secondary btn-block">done</a></div>
+        <div class="modal-body"><i class="fa fa-question-circle"></i>
+          <h6>update acount info</h6>
+          <form action="{{url_for('updateAcount')}}" method="post">
+            <label class="col-sm-2 col-form-label">Username</label>
+            <input type="text" class="form-control" id="inputEmail3" name="username">
+            <label class="col-sm-2 col-form-label">Password</label>
+            <input type="password" class="form-control" id="inputPassword3" name="password">         
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary btn-block "><i
+              class="bi bi-arrow-clockwise"></i>update</button>
+            </form>
+        </div>
       </div>
     </div>
   </div>
