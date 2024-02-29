@@ -4,9 +4,6 @@ from datetime import datetime, timedelta
 from io import BytesIO
 
 
-username = "admin"
-password = "admin"
-
 
 app = Flask(__name__)
 app.secret_key = "graduate"
@@ -41,14 +38,12 @@ def index():
 def login():
     if "user" in session:
         return redirect(url_for("dashboard")) #if user already in Session go to Dashboared
-    if request.method == "POST":
+    elif request.method == "POST":
         user = request.form["username"]
         passw = request.form["password"]
 
-        session["user"]=user  # get username and save in session then go to dashboard
-
-        found_user =  user == username and password == passw
-        if found_user:
+        if user == "admin" and passw == "admin":
+            session["user"]=user  # get username and save in session then go to dashboard
             return redirect(url_for("dashboard")) #if user was found go to Dashboared
         else:
             return redirect(url_for("login"))
