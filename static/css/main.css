@@ -64,6 +64,8 @@
 
 .login-container {
   border-radius: 30px;
+  margin: auto;
+  width: 75%;
   padding: 5%;
 }
 
@@ -78,9 +80,10 @@
   margin-right: 52%;
 }
 
-.login-body h2 {
-  color: white;
-  text-align: center;
+.login-image {
+  width: 25%;
+  margin-top: 3%;
+  margin-left: 50%;
 
 }
 table{
