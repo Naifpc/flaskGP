@@ -89,3 +89,7 @@
 table{
   margin-left: 17%;
 }
+.dashboard-panel{
+  width: 90%;
+  height: 20%;
+}
