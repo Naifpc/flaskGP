@@ -1,11 +1,13 @@
-from flask import Flask, render_template, url_for, request, redirect,session,send_file
+from flask import Flask, render_template, url_for, request, redirect,session,send_file,Response
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 from io import BytesIO
+import cv2
 
 
 
 app = Flask(__name__)
+camera=cv2.VideoCapture(0)
 app.secret_key = "graduate"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -28,6 +30,17 @@ class users(db.Model):
         self.image = image
         self.created_at = created_at
         self.updated_at = updated_at
+
+def generate_frames():
+    while True:
+        success,frame=camera.read() #reads camera frame
+        if not success:
+            break
+        else:
+            ret,buffer=cv2.imencode('.jpg',frame)#incode image into memory buffer
+            frame=buffer.tobytes()#convert buffer to frames
+        yield(b' -- frame\r\n'
+                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')#we use yield instade of return becuse return will end the loop
         
 
 @app.route("/")
@@ -82,13 +95,17 @@ def newUser():
         else:
             created_at = datetime.now()  # Provide current timestamp for created_at
             updated_at = datetime.now()  # Provide current timestamp for updated_at
-            new_user = users(user, password, image, created_at, updated_at)
+            new_user = users(user, image, created_at, updated_at)
             db.session.add(new_user)
             db.session.commit() #if user not found then add new user to data base db
         
         return redirect(url_for("newUser"))
     else:
         return render_template("newUser.html") 
+    
+@app.route("/video") 
+def video():
+    return Response(generate_frames(),mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route("/logout") #Delete username and password from Session then go to login
 def logout():
