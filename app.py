@@ -19,14 +19,12 @@ db = SQLAlchemy(app)
 class users(db.Model):
     _id = db.Column("id", db.Integer, primary_key=True)
     name = db.Column(db.String(100))
-    password = db.Column(db.String(100))
     image = db.Column(db.LargeBinary)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now) 
 
-    def __init__(self, name, password, image, created_at, updated_at):
+    def __init__(self, name, image, created_at, updated_at):
         self.name = name
-        self.password = password
         self.image = image
         self.created_at = created_at
         self.updated_at = updated_at
@@ -40,7 +38,7 @@ def generate_frames():
             ret,buffer=cv2.imencode('.jpg',frame)#incode image into memory buffer
             frame=buffer.tobytes()#convert buffer to frames
         yield(b' -- frame\r\n'
-                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')#we use yield instade of return becuse return will end the loop
+                    b'Content-Type: image/jpg\r\n\r\n' + frame + b'\r\n')#we use yield instade of return becuse return will end the loop
         
 
 @app.route("/")
