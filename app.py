@@ -29,6 +29,31 @@ class users(db.Model):
         self.created_at = created_at
         self.updated_at = updated_at
 
+#acount private info code
+class account:
+    def __init__(self):
+        self.__private_username = "admin"
+        self.__private_password = "admin"
+
+    def get_username(self):
+        return self.__private_username
+    
+    def get_password(self):
+        return self.__private_password
+
+    def update_account(self, username, password):
+        self.__private_username = username
+        self.__private_password = password
+
+    def check_account(self, username, password):
+        if self.__private_username == username:
+            if self.__private_password == password:
+                return True
+        else:
+            return False
+    
+
+
 def generate_frames():
     while True:
         success,frame=camera.read() #reads camera frame
@@ -40,6 +65,8 @@ def generate_frames():
         yield(b' -- frame\r\n'
                     b'Content-Type: image/jpg\r\n\r\n' + frame + b'\r\n')#we use yield instade of return becuse return will end the loop
         
+acc=account() #create instance of account
+
 
 @app.route("/")
 def index():
@@ -53,7 +80,7 @@ def login():
         user = request.form["username"]
         passw = request.form["password"]
 
-        if user == "admin" and passw == "admin":
+        if account.check_account(self=acc,username=user, password=passw):
             session["user"]=user  # get username and save in session then go to dashboard
             return redirect(url_for("dashboard")) #if user was found go to Dashboared
         else:
@@ -130,13 +157,9 @@ def updateAcount():
     if request.method == "POST":
         new_username = request.form["username"]
         new_password = request.form["password"]
+        account.update_account(self=acc ,username=new_username, password=new_password) #updates account info
 
-        session["user"]= new_username  # get username and save in session then go to dashboard
-
-        username = str(new_username)
-        password = str(new_password)
-
-        session.pop("user",None)
+        session.pop("user",None)#exit session
         return redirect(url_for("login"))
 
 
