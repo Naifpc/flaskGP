@@ -8,37 +8,36 @@
 <div class="card mb-3">
     <img src="static\images\Enter_face_panel.png" class="card-img-top object-fit-contain" alt="Enter_face_panel.png">
     <div class="card-body">
-        <h5 class="card-title">welcome {{username}}</h5>
-        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content.
-            This content is a little bit longer.</p>
+        <h5 class="card-title">Welcome {{username}}</h5>
+        <p class="card-text">Enter Face revolutionizes the realm of security with its innovative approach to face recognition technology.</p>
         <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
     </div>
 </div>
 <div class="row row-cols-1 row-cols-md-3 g-4">
     <div class="col">
-      <div class="card h-100">
-        <i class="bi bi-people-fill"></i> 
+      <div class="card h-100 p-2">
+        <h1 class="m-3"><i class="bi bi-people"></i> 2</h1>
         <div class="card-body">
           <h5 class="card-title">Registerd Userers</h5>
-          <p class="card-text"></p>
+          <a href="{{url_for('registerdUsers')}}" class="card-text">show more</a>
         </div>
       </div>
     </div>
     <div class="col">
-      <div class="card h-100">
-        <img src="..." class="card-img-top" alt="...">
+      <div class="card h-100 p-2">
+        <h1 class="m-3"><i class="bi bi-box-arrow-in-right"></i> 15</h1>
         <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">This is a short card.</p>
+          <h5 class="card-title">Entries</h5>
+          <a href="{{url_for('history')}}" class="card-text">show more</a>
         </div>
       </div>
     </div>
     <div class="col">
-      <div class="card h-100">
-        <img src="..." class="card-img-top" alt="...">
+      <div class="card h-100 p-2">
+        <h1 class="m-3"><i class="bi bi-exclamation-triangle"></i> 1</h1>
         <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text"></p>
+          <h5 class="card-title">Alerts</h5>
+          <a href="" class="card-text">show more</a>
         </div>
       </div>
     </div>
