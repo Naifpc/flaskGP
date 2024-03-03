@@ -13,7 +13,7 @@
     {% for item in values %}
     <div class="col">
         <div class="card h-100">
-            <image class="card-img-top" src="{{ url_for('download', upload_id=item._id) }}"></image>
+            <image class="card-img-top" src="{{ url_for('download', upload_id=item.user_id) }}"></image>
             <div class="card-body">
                 <h5 class="card-title">{{item.name}}</h5>
                 <p class="card-text"></p>

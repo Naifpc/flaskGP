@@ -22,7 +22,7 @@
     <tbody class="table-group-divider">
         {% for item in values %}
         <tr>
-            <th scope="row">{{item._id}}</th>
+            <th scope="row">{{item.user_id}}</th>
             <td>{{item.name}}</td>
             <td>{{item.created_at.strftime("%b %d %Y %H:%M")}}</td>
             <td>{{item.updated_at.strftime("%b %d %Y %H:%M")}}</td>

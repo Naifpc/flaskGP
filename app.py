@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, redirect,session,send_file,Response
+from flask import Flask, render_template, url_for, request, redirect,session,send_file,Response,flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 from io import BytesIO
@@ -18,7 +18,7 @@ app.permanent_session_lifetime = timedelta(days=1) #keep session for one day
 db = SQLAlchemy(app)
 
 class users(db.Model):
-    _id = db.Column("id", db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     image = db.Column(db.LargeBinary)
     created_at = db.Column(db.DateTime, default=datetime.now)
@@ -30,6 +30,15 @@ class users(db.Model):
         self.created_at = created_at
         self.updated_at = updated_at
 
+class entries(db.Model):
+    entrie_number = db.Column(db.Integer, primary_key=True)
+    time = db.Column(db.DateTime, default=datetime.now)
+    accepted= db.Column(db.Boolean, default=True)
+    user_id = db.Column( db.Integer, db.ForeignKey('users.user_id'))
+
+    def __init__(self, time):
+        self.time = time
+ 
 
     
 
@@ -86,7 +95,7 @@ def registerdUsers():
 @app.route("/history")
 def history():
     if "user" in session:
-        return render_template("history.html",values = users.query.all())
+        return render_template("history.html",values = entries.query.all())
     else:
         return redirect(url_for("login"))
     
@@ -108,6 +117,7 @@ def newUser():
                 new_user = users(user, image, created_at, updated_at)
                 db.session.add(new_user)
                 db.session.commit() #if user not found then add new user to data base db
+                flash("User  have been added successfuly")
             
             return redirect(url_for("newUser"))
         else:
@@ -119,8 +129,10 @@ def newUser():
 def video():
     return Response(generate_frames(),mimetype='multipart/x-mixed-replace; boundary=frame')
 
-@app.route("/logout") #Delete username and password from Session then go to login
+@app.route("/logout") #Delete username from Session then go to login
 def logout():
+    if "user" in session:
+        flash("you have been logged out successfuly")
     session.pop("user",None)
     return redirect(url_for("login"))
 
@@ -136,7 +148,7 @@ def deleteUser():
     
 @app.route('/download/<upload_id>')
 def download(upload_id):
-    upload = users.query.filter_by(_id=upload_id).first()
+    upload = users.query.filter_by(user_id=upload_id).first()
     return send_file(BytesIO(upload.image), mimetype='image/jpg')
 
 @app.route("/updateAcount", methods=["POST", "GET"]) #update username and password 
@@ -145,7 +157,8 @@ def updateAcount():
         new_username = request.form["username"]
         new_password = request.form["password"]
         current_account.update_account(username=new_username, password=new_password) #updates account info
-
+        if "user" in session:
+            flash("Username and Password have been updated successfuly")
         session.pop("user",None)#exit session
         return redirect(url_for("login"))
 
