@@ -72,7 +72,7 @@ def login():
 def dashboard():
     if "user" in session: 
         user = session["user"]
-        return render_template("dashboard.html",username = user)
+        return render_template("dashboard.html",username= user, num_of_users = users.query.count() )
     else:
         return redirect(url_for("login"))
 
