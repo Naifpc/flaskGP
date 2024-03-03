@@ -17,6 +17,7 @@
   font-size: 20px;
   color: white;
   display: block;
+  
 }
 
 .sidebar-logo {
@@ -29,6 +30,7 @@
 .sidebar .sidebtn:hover {
   background-color: #454d55;
   /* Bootstrap's darker color */
+  border-left: 5px solid rgb(63, 81, 213) ;
 }
 
 /* Main content */

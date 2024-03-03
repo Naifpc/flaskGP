@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 from io import BytesIO
 import cv2
+from account import *
 
 
 
@@ -29,28 +30,7 @@ class users(db.Model):
         self.created_at = created_at
         self.updated_at = updated_at
 
-#acount private info code
-class account:
-    def __init__(self):
-        self.__private_username = "admin"
-        self.__private_password = "admin"
 
-    def get_username(self):
-        return self.__private_username
-    
-    def get_password(self):
-        return self.__private_password
-
-    def update_account(self, username, password):
-        self.__private_username = username
-        self.__private_password = password
-
-    def check_account(self, username, password):
-        if self.__private_username == username:
-            if self.__private_password == password:
-                return True
-        else:
-            return False
     
 
 
@@ -65,7 +45,7 @@ def generate_frames():
         yield(b' -- frame\r\n'
                     b'Content-Type: image/jpg\r\n\r\n' + frame + b'\r\n')#we use yield instade of return becuse return will end the loop
         
-acc=account() #create instance of account
+current_account= account() #create instance of account
 
 
 @app.route("/")
@@ -80,7 +60,7 @@ def login():
         user = request.form["username"]
         passw = request.form["password"]
 
-        if account.check_account(self=acc,username=user, password=passw):
+        if current_account.check_account(username=user, password=passw):
             session["user"]=user  # get username and save in session then go to dashboard
             return redirect(url_for("dashboard")) #if user was found go to Dashboared
         else:
@@ -98,35 +78,42 @@ def dashboard():
 
 @app.route("/registerdUsers")
 def registerdUsers():
-    return render_template("registerdUsers.html",values = users.query.all())
+    if "user" in session: 
+        return render_template("registerdUsers.html",values = users.query.all())
+    else:
+        return redirect(url_for("login"))
 
 @app.route("/history")
 def history():
-    return render_template("history.html",values = users.query.all())
+    if "user" in session:
+        return render_template("history.html",values = users.query.all())
+    else:
+        return redirect(url_for("login"))
     
 @app.route("/newUser",methods=["POST","GET"])
 def newUser():
-    if "user" not in session:
-            return redirect(url_for("login")) #if user not in Session go to login
-    if request.method == "POST":
-        user = request.form["username"]
-        file = request.files["image"]
-        image= file.read()
+    if "user" in session:
+        if request.method == "POST":
+            user = request.form["username"]
+            file = request.files["image"]
+            image= file.read()
 
-        found_user =  users.query.filter_by(name=user).first() 
-        if found_user:
-            found_user.updated_at = datetime.now()
-            db.session.commit()
+            found_user =  users.query.filter_by(name=user).first() 
+            if found_user:
+                found_user.updated_at = datetime.now()
+                db.session.commit()
+            else:
+                created_at = datetime.now()  # Provide current timestamp for created_at
+                updated_at = datetime.now()  # Provide current timestamp for updated_at
+                new_user = users(user, image, created_at, updated_at)
+                db.session.add(new_user)
+                db.session.commit() #if user not found then add new user to data base db
+            
+            return redirect(url_for("newUser"))
         else:
-            created_at = datetime.now()  # Provide current timestamp for created_at
-            updated_at = datetime.now()  # Provide current timestamp for updated_at
-            new_user = users(user, image, created_at, updated_at)
-            db.session.add(new_user)
-            db.session.commit() #if user not found then add new user to data base db
-        
-        return redirect(url_for("newUser"))
+            return render_template("newUser.html") 
     else:
-        return render_template("newUser.html") 
+        return redirect(url_for("login"))
     
 @app.route("/video") 
 def video():
@@ -157,7 +144,7 @@ def updateAcount():
     if request.method == "POST":
         new_username = request.form["username"]
         new_password = request.form["password"]
-        account.update_account(self=acc ,username=new_username, password=new_password) #updates account info
+        current_account.update_account(username=new_username, password=new_password) #updates account info
 
         session.pop("user",None)#exit session
         return redirect(url_for("login"))
