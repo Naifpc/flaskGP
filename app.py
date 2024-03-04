@@ -71,6 +71,7 @@ def login():
 
         if current_account.check_account(username=user, password=passw):
             session["user"]=user  # get username and save in session then go to dashboard
+            flash("you have logged-in successfuly")
             return redirect(url_for("dashboard")) #if user was found go to Dashboared
         else:
             return redirect(url_for("login"))
@@ -132,7 +133,7 @@ def video():
 @app.route("/logout") #Delete username from Session then go to login
 def logout():
     if "user" in session:
-        flash("you have been logged out successfuly")
+        flash("you have been logged-out successfuly")
     session.pop("user",None)
     return redirect(url_for("login"))
 

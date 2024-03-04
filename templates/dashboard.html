@@ -5,6 +5,16 @@
 
 {% block body %}
 <h2>Dashboard</h2>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for msg in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <i class="bi bi-check-circle"></i> {{msg}}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
 <div class="card mb-3">
     <img src="static\images\Enter_face_panel.png" class="card-img-top object-fit-contain" alt="Enter_face_panel.png">
     <div class="card-body">
@@ -25,7 +35,7 @@
     </div>
     <div class="col">
       <div class="card h-100 p-2">
-        <h1 class="m-3"><i class="bi bi-box-arrow-in-right"></i> 15</h1>
+        <h1 class="m-3"><i class="bi bi-box-arrow-in-right"></i> 0</h1>
         <div class="card-body">
           <h5 class="card-title">Entries</h5>
           <a href="{{url_for('history')}}" class="card-text">show more</a>
@@ -34,7 +44,7 @@
     </div>
     <div class="col">
       <div class="card h-100 p-2">
-        <h1 class="m-3"><i class="bi bi-exclamation-triangle"></i> 1</h1>
+        <h1 class="m-3"><i class="bi bi-exclamation-triangle"></i> 0</h1>
         <div class="card-body">
           <h5 class="card-title">Alerts</h5>
           <a href="" class="card-text">show more</a>
