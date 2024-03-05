@@ -25,7 +25,7 @@
     </div>
     <div class="col">
       <div class="card h-100 p-2">
-        <h1 class="m-3"><i class="bi bi-box-arrow-in-right"></i> 0</h1>
+        <h1 class="m-3"><i class="bi bi-box-arrow-in-right"></i> {{num_of_entries}}</h1>
         <div class="card-body">
           <h5 class="card-title">Entries</h5>
           <small><a href="{{url_for('history')}}" class="card-text">show more</a></small>
@@ -34,7 +34,7 @@
     </div>
     <div class="col">
       <div class="card h-100 p-2">
-        <h1 class="m-3"><i class="bi bi-exclamation-triangle"></i> 0</h1>
+        <h1 class="m-3"><i class="bi bi-exclamation-triangle"></i> {{num_of_alerts}}</h1>
         <div class="card-body">
           <h5 class="card-title">Alerts</h5>
           <small><a href="{{url_for('history')}}" class="card-text">show more</a></small>

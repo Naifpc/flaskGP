@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from io import BytesIO
 import cv2
 from account import *
-from forms import UserForm
+from forms import UserForm, AccountForm
 
 
 
@@ -23,13 +23,12 @@ class users(db.Model):
     name = db.Column(db.String(100))
     image = db.Column(db.LargeBinary)
     created_at = db.Column(db.DateTime, default=datetime.now)
-    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now) 
 
-    def __init__(self, name, image, created_at, updated_at):
+
+    def __init__(self, name, image):
         self.name = name
         self.image = image
-        self.created_at = created_at
-        self.updated_at = updated_at
+
 
 class entries(db.Model):
     entrie_number = db.Column(db.Integer, primary_key=True)
@@ -37,8 +36,8 @@ class entries(db.Model):
     accepted= db.Column(db.Boolean, default=True)
     user_id = db.Column( db.Integer, db.ForeignKey('users.user_id'))
 
-    def __init__(self, time):
-        self.time = time
+    def __init__(self, user_id):
+        self.user_id = user_id
  
 
     
@@ -68,7 +67,7 @@ def login():
         return redirect(url_for("dashboard")) #if user already in Session go to Dashboared
     
     elif request.method == "POST":
-        form = UserForm(request.form)
+        form = AccountForm(request.form)
         if form.validate():#to validate input
             user = request.form["username"]
             passw = request.form["password"]
@@ -88,7 +87,7 @@ def login():
 def dashboard():
     if "user" in session: 
         user = session["user"]
-        return render_template("dashboard.html",username= user, num_of_users = users.query.count() )
+        return render_template("dashboard.html",username= user, num_of_users = users.query.count(), num_of_entries = entries.query.count(), num_of_alerts = entries.query.filter_by(accepted=False).count())
     else:
         return redirect(url_for("login"))
 
@@ -121,9 +120,8 @@ def newUser():
                     found_user.updated_at = datetime.now()
                     db.session.commit()
                 else:
-                    created_at = datetime.now()  # Provide current timestamp for created_at
                     updated_at = datetime.now()  # Provide current timestamp for updated_at
-                    new_user = users(user, image, created_at, updated_at)
+                    new_user = users(user, image)
                     db.session.add(new_user)
                     db.session.commit() #if user not found then add new user to data base db
                     flash("User  have been added successfuly")
@@ -167,7 +165,7 @@ def download(upload_id):
 def updateAcount():
     if "user" in session:
         if request.method == "POST":
-            form = UserForm(request.form)
+            form = AccountForm(request.form)
             if form.validate():#to validate input
                 new_username = request.form["username"]
                 new_password = request.form["password"]
