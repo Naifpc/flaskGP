@@ -19,20 +19,27 @@
   <div class="login-container container  bg-white">
     <div class="container-header">
       <h3 class="container-title">Login</h2>
-        {% with messages = get_flashed_messages() %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
-            {% for msg in messages %}
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-              <i class="bi bi-check-circle"></i> {{msg}}
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+            {% for category, msg in messages %}
+              {% if category == 'error' %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <i class="bi bi-exclamation-triangle"></i> {{msg}}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              {% else %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                  <i class="bi bi-check-circle"></i> {{msg}}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              {% endif %}
             {% endfor %}
           {% endif %}
         {% endwith %}
     </div>
     <form action="{{url_for('login')}}" method="post">
       <label class="col-sm-2 col-form-label">Username</label>
-      <input type="text" class="form-control" id="inputEmail3" name="username">
+      <input type="text" class="form-control"  name="username">
       <label class="col-sm-2 col-form-label">Password</label>
       <input type="password" class="form-control" id="inputPassword3" name="password">
       <button type="submit" class="btn btn-primary btn-lg login-btn"><i class="bi bi-box-arrow-in-right"
