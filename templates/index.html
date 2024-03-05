@@ -53,9 +53,9 @@
         <div class="modal-body"><i class="fa fa-question-circle"></i>
           <h6>Update acount info: </h6>
           <form action="{{url_for('updateAcount')}}" method="post">
-            <input type="text" class="form-control" id="inputEmail3" name="username" placeholder="username">
+            <input type="text" class="form-control" id="inputEmail3" name="username" placeholder="username" required>
             <br>
-            <input type="password" class="form-control" id="inputPassword3" name="password" placeholder="password">         
+            <input type="password" class="form-control" id="inputPassword3" name="password" placeholder="password" required>         
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary btn-block ">Apply</button>
@@ -67,6 +67,23 @@
 
   <!-- Page content -->
   <div class="content bg-light">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, msg in messages %}
+                {% if category == 'error' %}
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle"></i> {{msg}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                {% else %}
+                  <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle"></i> {{msg}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+            {% endwith %}
     {% block body %}{% endblock %}
   </div>
 

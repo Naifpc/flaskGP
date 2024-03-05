@@ -165,14 +165,24 @@ def download(upload_id):
 
 @app.route("/updateAcount", methods=["POST", "GET"]) #update username and password 
 def updateAcount():
-    if request.method == "POST":
-        new_username = request.form["username"]
-        new_password = request.form["password"]
-        current_account.update_account(username=new_username, password=new_password) #updates account info
-        if "user" in session:
-            flash("Username and Password have been updated successfuly")
-        session.pop("user",None)#exit session
+    if "user" in session:
+        if request.method == "POST":
+            form = UserForm(request.form)
+            if form.validate():#to validate input
+                new_username = request.form["username"]
+                new_password = request.form["password"]
+                current_account.update_account(username=new_username, password=new_password) #updates account info
+                flash("Username and Password have been updated successfuly")
+                session.pop("user",None)#exit session
+                return redirect(url_for("login"))
+            else:
+                flash("Invalid input!", "error")
+                return redirect(request.referrer)
+    else:
         return redirect(url_for("login"))
+            
+        
+        
 
 
 
