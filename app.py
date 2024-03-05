@@ -117,10 +117,8 @@ def newUser():
 
                 found_user =  users.query.filter_by(name=user).first() 
                 if found_user:
-                    found_user.updated_at = datetime.now()
-                    db.session.commit()
+                    flash("user already exists", "info")
                 else:
-                    updated_at = datetime.now()  # Provide current timestamp for updated_at
                     new_user = users(user, image)
                     db.session.add(new_user)
                     db.session.commit() #if user not found then add new user to data base db
