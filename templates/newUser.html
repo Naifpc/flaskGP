@@ -11,7 +11,7 @@
 <form action="{{url_for('newUser')}}" method="post" enctype="multipart/form-data">
     <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">User Name</label>
-        <input type="text" class="form-control" name="username" required>
+        <input type="text" class="form-control" name="username" >
     </div>
 
     <div>
@@ -21,7 +21,7 @@
     <p>OR you can upload</p>
 
     <div class="input-group mb-3">
-        <input type="file" class="form-control" id="inputGroupFile02" name="image">
+        <input type="file" class="form-control" id="inputGroupFile02" name="file" required>
         <label class="input-group-text" for="inputGroupFile02">Upload</label>
     </div>
 

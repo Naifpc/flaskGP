@@ -76,9 +76,13 @@ def login():
                 flash("you have logged-in successfuly")
                 return redirect(url_for("dashboard")) #if user was found go to Dashboared
             else:
+                flash("wrong username or password", "error")
                 return redirect(url_for("login"))
         else:
-            flash("invalid input!", 'error')
+            # Flash all validation errors
+            for field, errors in form.errors.items():
+                for error in errors:
+                    flash(f"{getattr(form, field).label.text}: {error}", "error")
             return redirect(url_for("login"))
     else:
         return render_template("login.html") 
@@ -112,7 +116,7 @@ def newUser():
             form = UserForm(request.form)
             if form.validate():#to validate input
                 user = request.form["username"]
-                file = request.files["image"]
+                file = request.files["file"]
                 image= file.read()
 
                 found_user =  users.query.filter_by(name=user).first() 
@@ -122,11 +126,14 @@ def newUser():
                     new_user = users(user, image)
                     db.session.add(new_user)
                     db.session.commit() #if user not found then add new user to data base db
-                    flash("User  have been added successfuly")
+                    flash("user  have been added successfuly")
                 
                 return redirect(url_for("newUser"))
             else:
-                flash("invalid input!", 'error')
+                # Flash all validation errors
+                for field, errors in form.errors.items():
+                    for error in errors:
+                        flash(f"{getattr(form, field).label.text}: {error}", "error")
                 return redirect(url_for("newUser"))
         else:
             return render_template("newUser.html") 
@@ -167,21 +174,23 @@ def updateAcount():
             if form.validate():#to validate input
                 new_username = request.form["username"]
                 new_password = request.form["password"]
+                if current_account.check_account(username=new_username, password=new_password):
+                    flash("username and password are the same","info")
+                    return redirect(request.referrer)
                 current_account.update_account(username=new_username, password=new_password) #updates account info
                 flash("Username and Password have been updated successfuly")
                 session.pop("user",None)#exit session
                 return redirect(url_for("login"))
             else:
-                flash("Invalid input!", "error")
+                # Flash all validation errors
+                for field, errors in form.errors.items():
+                    for error in errors:
+                        flash(f"{getattr(form, field).label.text}: {error}", "error")
                 return redirect(request.referrer)
     else:
         return redirect(url_for("login"))
             
         
-        
-
-
-
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()

@@ -65,7 +65,7 @@
     </div>
   </div>
 
-  <!-- Page content -->
+  <!-- flash messeges -->
   <div class="content bg-light">
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
@@ -77,7 +77,7 @@
             </div>
           {% elif category == 'info' %}
             <div class="alert alert-info alert-dismissible fade show" role="alert">
-              <i class="bi bi-check-circle"></i> {{msg}}
+              <i class="bi bi-info-circle"></i>  {{msg}}
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
           {% else %}
@@ -89,7 +89,7 @@
         {% endfor %}
       {% endif %}
     {% endwith %}
-
+    <!-- Page content -->
     {% block body %}{% endblock %}
   </div>
 
