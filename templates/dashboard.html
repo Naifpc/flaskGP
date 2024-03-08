@@ -5,7 +5,7 @@
 
 {% block body %}
 <h2>Dashboard</h2>
-<div class="card mb-3">
+<div class="card mb-3 shadow">
     <img src="static\images\Enter_face_panel.png" class="card-img-top object-fit-contain" alt="Enter_face_panel.png">
     <div class="card-body">
         <h5 class="card-title">Welcome {{username}}</h5>
@@ -15,7 +15,7 @@
 </div>
 <div class="row row-cols-1 row-cols-md-3 g-4">
     <div class="col">
-      <div class="card h-100 p-2">
+      <div class="card h-100 p-2 shadow">
         <h1 class="m-3"><i class="bi bi-people"></i> {{num_of_users}}</h1>
         <div class="card-body">
           <h5 class="card-title">Registerd Userers</h5>
@@ -24,7 +24,7 @@
       </div>
     </div>
     <div class="col">
-      <div class="card h-100 p-2">
+      <div class="card h-100 p-2 shadow">
         <h1 class="m-3"><i class="bi bi-box-arrow-in-right"></i> {{num_of_entries}}</h1>
         <div class="card-body">
           <h5 class="card-title">Entries</h5>
@@ -33,7 +33,7 @@
       </div>
     </div>
     <div class="col">
-      <div class="card h-100 p-2">
+      <div class="card h-100 p-2 shadow">
         <h1 class="m-3"><i class="bi bi-exclamation-triangle"></i> {{num_of_alerts}}</h1>
         <div class="card-body">
           <h5 class="card-title">Alerts</h5>

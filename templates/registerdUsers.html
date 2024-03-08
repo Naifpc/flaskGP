@@ -6,13 +6,12 @@
 
 <h2>Registerd Users</h2>
 <div class="nav-header">
-<a href="{{url_for('dashboard')}}" class="Info link link-underline link-underline-opacity-0">Dashboared</a><a  class="Info link link-underline link-underline-opacity-0 link-opacity-50">> Registerd Users</a>
-</div>
+
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
     {% for item in values %}
     <div class="col">
-        <div class="card h-100">
+        <div class="card h-100 shadow">
             <image class="card-img-top" src="{{ url_for('download', upload_id=item.user_id) }}"></image>
             <div class="card-body">
                 <h5 class="card-title">{{item.name}}</h5>

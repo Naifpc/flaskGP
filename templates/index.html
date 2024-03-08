@@ -20,10 +20,10 @@
   <!-- Sidebar -->
   <div class="sidebar ">
     <image class="card-img-top sidebar-logo" src="static\images\Enter_Face_no_wallpaper.png"></image>
-    <a class="sidebtn" href="{{url_for('dashboard')}}"><i class="bi bi-columns-gap"></i> Dashboared</a>
-    <a class="sidebtn" href="{{url_for('registerdUsers')}}"><i class="bi bi-people"></i> Registerd Users</a>
-    <a class="sidebtn" href="{{url_for('history')}}"><i class="bi bi-clock-history"></i> History</a>
-    <a class="sidebtn" href="{{url_for('newUser')}}"><i class="bi bi-person-add"></i> New user</a>
+    <a class="sidebtn {% if request.endpoint == 'dashboard' %}active{% endif %}" href="{{url_for('dashboard')}}"><i class="bi bi-columns-gap"></i> Dashboared</a>
+    <a class="sidebtn {% if request.endpoint == 'registerdUsers' %}active{% endif %}" href="{{url_for('registerdUsers')}}"><i class="bi bi-people"></i> Registerd Users</a>
+    <a class="sidebtn {% if request.endpoint == 'history' %}active{% endif %}" href="{{url_for('history')}}"><i class="bi bi-clock-history"></i> History</a>
+    <a class="sidebtn {% if request.endpoint == 'newUser' %}active{% endif %}" href="{{url_for('newUser')}}"><i class="bi bi-person-add"></i> New user</a>
     <button class="logout-btn btn btn-outline-danger" data-toggle="modal" data-target=".bs-example-modal-sm"><i
         class="bi bi-box-arrow-right"></i> Logout</button>
     <button class="sittings-btn btn btn-secondary" data-toggle="modal" data-target=".settings"><i
@@ -53,9 +53,9 @@
         <div class="modal-body"><i class="fa fa-question-circle"></i>
           <h6>Update acount info: </h6>
           <form action="{{url_for('updateAcount')}}" method="post">
-            <input type="text" class="form-control" id="inputEmail3" name="username" placeholder="username" required>
+            <input type="text" class="form-control shadow-sm" id="inputEmail3" name="username" placeholder="username" required>
             <br>
-            <input type="password" class="form-control" id="inputPassword3" name="password" placeholder="password" required>         
+            <input type="password" class="form-control shadow-sm " id="inputPassword3" name="password" placeholder="password" required>         
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary btn-block ">Apply</button>

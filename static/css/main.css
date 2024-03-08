@@ -1,7 +1,8 @@
 /* Set the width of the sidebar */
 .sidebar {
   height: 100%;
-  width: 250px;
+  width: 20%;
+  min-width: 250px;
   position: fixed;
   top: 0;
   left: 0;
@@ -23,14 +24,20 @@
 .sidebar-logo {
   padding: 10px 15px;
   margin-bottom: 3%;
+  width: 85%;
 
 }
 
 /* Change color on hover */
 .sidebar .sidebtn:hover {
-  background-color: #454d55;
-  /* Bootstrap's darker color */
-  border-left: 5px solid rgb(63, 81, 213) ;
+  background-color: #454d55; /* Bootstrap's darker color */
+    border-left: 5px solid;
+    border-image: linear-gradient(135deg, #b6359c, #ef0a6a)/*Enter face theme*/ 1;
+}
+.active {
+    background-color: #454d55; /* Bootstrap's darker color */
+    border-left: 5px solid;
+    border-image: linear-gradient(135deg, #b6359c, #ef0a6a)/*Enter face theme*/ 1;
 }
 
 /* Main content */
@@ -67,7 +74,7 @@
 .login-container {
   border-radius: 30px;
   margin: auto;
-  width: 75%;
+  width: 60%;
   padding: 5%;
 }
 
@@ -83,7 +90,7 @@
 }
 
 .login-image {
-  width: 25%;
+  width: 20%;
   margin-top: 3%;
   margin-left: 50%;
 
@@ -94,4 +101,13 @@ table{
 .dashboard-panel{
   width: 90%;
   height: 20%;
+}
+.btn-primary{
+  background: linear-gradient(135deg, #b6359c, #ef0a6a);/*Enter face theme*/
+  border-color: transparent ;
+}
+/* Change color on hover */
+.btn-primary:hover {
+   background: linear-gradient(135deg, #b6359c, #b6359c);
+  border-color: transparent ;
 }
