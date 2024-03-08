@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="{% if 'theme' in session %}{{ session['theme'] }}{% else %}light{% endif %}">
 
 <head>
   <meta charset="UTF-8">
@@ -15,8 +15,9 @@
 </head>
 
 <body class="login-body">
+  
   <image class="  start-50 translate-middle login-image" src="static\images\Enter_Face_no_wallpaper.png"></image>
-  <div class="login-container container bg-light">
+  <div class="login-container container bg-body-tertiary">
     <div class="container-header">
       <h3 class="container-title">Login</h2>
          <!-- flash messeges -->

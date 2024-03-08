@@ -18,6 +18,7 @@ app.permanent_session_lifetime = timedelta(days=1) #keep session for one day
 #databasecode
 db = SQLAlchemy(app)
 
+
 class users(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
@@ -189,7 +190,11 @@ def updateAcount():
                 return redirect(request.referrer)
     else:
         return redirect(url_for("login"))
-            
+    
+@app.route('/set_theme/<settheme>')
+def set_theme(settheme):
+    session['theme'] = settheme
+    return redirect(request.referrer)  
         
 if __name__ == "__main__":
     with app.app_context():

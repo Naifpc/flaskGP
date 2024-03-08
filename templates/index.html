@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="{% if 'theme' in session %}{{ session['theme'] }}{% else %}light{% endif %}">
 
 <head>
   <meta charset="UTF-8">
@@ -16,6 +16,7 @@
 </head>
 
 <body>
+  
 
   <!-- Sidebar -->
   <div class="sidebar ">
@@ -55,8 +56,19 @@
           <form action="{{url_for('updateAcount')}}" method="post">
             <input type="text" class="form-control shadow-sm" id="inputEmail3" name="username" placeholder="username" required>
             <br>
-            <input type="password" class="form-control shadow-sm " id="inputPassword3" name="password" placeholder="password" required>         
+            <input type="password" class="form-control shadow-sm " id="inputPassword3" name="password" placeholder="password" required>  
+            <br><h6>theme: </h6>
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            choose theme
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{{ url_for('set_theme', settheme='light') }}">light</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('set_theme', settheme='dark') }}">dark</a></li>
+          </ul>
+        </div>       
         </div>
+        
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary btn-block ">Apply</button>
             </form>
@@ -65,8 +77,11 @@
     </div>
   </div>
 
+
+  
+
   <!-- flash messeges -->
-  <div class="content bg-light">
+  <div class="content bg-body-tertiary">
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, msg in messages %}
