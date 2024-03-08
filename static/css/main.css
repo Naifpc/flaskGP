@@ -33,6 +33,7 @@
   background-color: #454d55; /* Bootstrap's darker color */
     border-left: 5px solid;
     border-image: linear-gradient(135deg, #b6359c, #ef0a6a)/*Enter face theme*/ 1;
+    transition: all ease-in-out .3s;
 }
 .active {
     background-color: #454d55; /* Bootstrap's darker color */
@@ -111,3 +112,4 @@ table{
    background: linear-gradient(135deg, #b6359c, #b6359c);
   border-color: transparent ;
 }
+
