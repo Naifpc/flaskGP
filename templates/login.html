@@ -14,12 +14,12 @@
 
 </head>
 
-<body class="login-body bg-body">
+<body class="login-body bg-body-tertiary ">
 
   <image class="  start-50 translate-middle login-image"
-    src="{% if session['theme'] == 'light' %} static\images\Enter_Face_Dark.png {% else %} static\images\Enter_Face_no_wallpaper.png {% endif %}">
+    src="{% if session['theme'] == 'dark' %} static\images\Enter_Face_no_wallpaper.png {% else %} static\images\Enter_Face_Dark.png {% endif %}">
   </image>
-  <div class="login-container container bg-body-tertiary shadow">
+  <div class="login-container container bg-body shadow">
     <div class="container-header">
       <h2 class="text-center" style="font-weight:bold">Login</h2>
       <div class="container-title ">
@@ -49,7 +49,7 @@
       </div>
       <form action="{{url_for('login')}}" method="post">
         <label class="col-sm-2 col-form-label">Username</label>
-        <input type="text" class="form-control shadow-sm " name="username" required>
+        <input type="text" class="form-control shadow-sm " name="username"  required>
         <label class="col-sm-2 col-form-label">Password</label>
         <input type="password" class="form-control shadow-sm " id="inputPassword3" name="password" required>
         <button type="submit" class="btn btn-primary btn-lg login-btn"><i class="bi bi-box-arrow-in-right"
