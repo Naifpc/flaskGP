@@ -14,10 +14,10 @@
 
 </head>
 
-<body class="login-body">
+<body class="login-body bg-body">
 
-  <image class="  start-50 translate-middle login-image" src="static\images\Enter_Face_no_wallpaper.png"></image>
-  <div class="login-container container bg-body-tertiary">
+  <image class="  start-50 translate-middle login-image" src="{% if session['theme'] == 'light' %} static\images\Enter_Face_Dark.png {% else %} static\images\Enter_Face_no_wallpaper.png {% endif %}"></image>
+  <div class="login-container container bg-body-tertiary shadow">
     <div class="container-header">
       <h3 class="container-title">Login</h2>
         <!-- flash messeges -->

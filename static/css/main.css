@@ -67,8 +67,6 @@
 }
 
 .login-body {
-  background-color: #343a40;
-  /* Bootstrap's dark color */
   padding: 2%;
 }
 [data-bs-theme=dark] .login-body {
