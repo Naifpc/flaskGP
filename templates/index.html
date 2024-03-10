@@ -19,19 +19,19 @@
 
 
   <!-- Sidebar -->
-  <div class="sidebar  ">
-    <image class="card-img-top sidebar-logo" src="static\images\Enter_Face_no_wallpaper.png"></image>
-    <a class="sidebtn {% if request.endpoint == 'dashboard' %}active{% endif %}" href="{{url_for('dashboard')}}"><i
+  <div class="sidebar bg-body shadow">
+    <image class="card-img-top sidebar-logo" src="{% if session['theme'] == 'light' %} static\images\Enter_Face_Dark.png {% else %} static\images\Enter_Face_no_wallpaper.png {% endif %}"></image>
+    <a class="sidebtn text-body {% if request.endpoint == 'dashboard' %}active{% endif %}" href="{{url_for('dashboard')}}"><i
         class="bi bi-columns-gap"></i> Dashboared</a>
-    <a class="sidebtn {% if request.endpoint == 'registerdUsers' %}active{% endif %}"
+    <a class="sidebtn text-body {% if request.endpoint == 'registerdUsers' %}active{% endif %}"
       href="{{url_for('registerdUsers')}}"><i class="bi bi-people"></i> Registerd Users</a>
-    <a class="sidebtn {% if request.endpoint == 'history' %}active{% endif %}" href="{{url_for('history')}}"><i
+    <a class="sidebtn text-body {% if request.endpoint == 'history' %}active{% endif %}" href="{{url_for('history')}}"><i
         class="bi bi-clock-history"></i> History</a>
-    <a class="sidebtn {% if request.endpoint == 'newUser' %}active{% endif %}" href="{{url_for('newUser')}}"><i
+    <a class="sidebtn text-body {% if request.endpoint == 'newUser' %}active{% endif %}" href="{{url_for('newUser')}}"><i
         class="bi bi-person-add"></i> New user</a>
     <button class="logout-btn btn btn-outline-danger" data-toggle="modal" data-target=".bs-example-modal-sm"><i
         class="bi bi-box-arrow-right"></i> Logout</button>
-    <button class="sittings-btn btn btn-secondary" data-toggle="modal" data-target=".settings"><i
+    <button class="sittings-btn btn btn-outline-secondary" data-toggle="modal" data-target=".settings"><i
         class="bi bi-gear"></i></button>
   </div>
 

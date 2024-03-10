@@ -7,17 +7,8 @@
   position: fixed;
   top: 0;
   left: 0;
-  background-color: #343a40;
-  /* Bootstrap's dark color */
   padding-top: 10px;
 }
-
-[data-bs-theme=dark] .sidebar {
-  background-color: var(--bs-dark-bg-subtle);
-}
-
-
-
 /* Style sidebar links */
 .sidebar a {
   padding: 10px 15px;
@@ -37,13 +28,13 @@
 
 /* Change color on hover */
 .sidebar .sidebtn:hover {
-  background-color: #454d55; /* Bootstrap's darker color */
+    background-color: var(--bs-secondary-bg-subtle);
     border-left: 5px solid;
     border-image: linear-gradient(135deg, #b6359c, #ef0a6a)/*Enter face theme*/ 1;
     transition: all ease-in-out .3s;
 }
 .active {
-    background-color: #454d55; /* Bootstrap's darker color */
+    background-color: var(--bs-secondary-bg-subtle);
     border-left: 5px solid;
     border-image: linear-gradient(135deg, #b6359c, #ef0a6a)/*Enter face theme*/ 1;
 }
