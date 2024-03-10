@@ -13,7 +13,7 @@ camera=cv2.VideoCapture(0)
 app.secret_key = "graduate"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.permanent_session_lifetime = timedelta(days=1) #keep session for one day
+app.permanent_session_lifetime = timedelta(hours=1) #keep session for one day
 
 #databasecode
 db = SQLAlchemy(app)
