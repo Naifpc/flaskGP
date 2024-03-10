@@ -16,10 +16,13 @@
 
 <body class="login-body bg-body">
 
-  <image class="  start-50 translate-middle login-image" src="{% if session['theme'] == 'light' %} static\images\Enter_Face_Dark.png {% else %} static\images\Enter_Face_no_wallpaper.png {% endif %}"></image>
+  <image class="  start-50 translate-middle login-image"
+    src="{% if session['theme'] == 'light' %} static\images\Enter_Face_Dark.png {% else %} static\images\Enter_Face_no_wallpaper.png {% endif %}">
+  </image>
   <div class="login-container container bg-body-tertiary shadow">
     <div class="container-header">
-      <h3 class="container-title">Login</h2>
+      <h2 class="text-center" style="font-weight:bold">Login</h2>
+      <div class="container-title ">
         <!-- flash messeges -->
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -43,17 +46,17 @@
         {% endfor %}
         {% endif %}
         {% endwith %}
-    </div>
-    <form action="{{url_for('login')}}" method="post">
-      <label class="col-sm-2 col-form-label">Username</label>
-      <input type="text" class="form-control shadow-sm " name="username" required>
-      <label class="col-sm-2 col-form-label">Password</label>
-      <input type="password" class="form-control shadow-sm " id="inputPassword3" name="password" required>
-      <button type="submit" class="btn btn-primary btn-lg login-btn"><i class="bi bi-box-arrow-in-right"
-          value="submit"></i> Sign in</button>
-    </form>
+      </div>
+      <form action="{{url_for('login')}}" method="post">
+        <label class="col-sm-2 col-form-label">Username</label>
+        <input type="text" class="form-control shadow-sm " name="username" required>
+        <label class="col-sm-2 col-form-label">Password</label>
+        <input type="password" class="form-control shadow-sm " id="inputPassword3" name="password" required>
+        <button type="submit" class="btn btn-primary btn-lg login-btn"><i class="bi bi-box-arrow-in-right"
+            value="submit"></i> Sign in</button>
+      </form>
 
-  </div>
+    </div>
   </div>
 
 </body>
