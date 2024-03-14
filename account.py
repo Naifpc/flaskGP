@@ -1,19 +1,17 @@
-#acount private info code
-class account:
-    def __init__(self):
-        self.__private_username = "admin"
-        self.__private_password = "admin"
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 
-    def get_username(self):
-        return self.__private_username
+db = SQLAlchemy()
 
-    def update_account(self, username, password):
-        self.__private_username = username
-        self.__private_password = password
+class Account(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    password_hash = db.Column(db.String(128), nullable=False)
 
-    def check_account(self, username, password):
-        if self.__private_username == username:
-            if self.__private_password == password:
-                return True
-        else:
-            return False
+    def __init__(self, password):
+        self.set_password(password)
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)

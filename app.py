@@ -55,7 +55,7 @@ def generate_frames():
         yield(b' -- frame\r\n'
                     b'Content-Type: image/jpg\r\n\r\n' + frame + b'\r\n')#we use yield instade of return becuse return will end the loop
         
-current_account= account() #create instance of account
+current_account= Account(password="Admin") #create instance of account
 
 
 
@@ -71,14 +71,13 @@ def login():
     elif request.method == "POST":
         form = AccountForm(request.form)
         if form.validate():#to validate input
-            user = request.form["username"]
             passw = request.form["password"]
-            if current_account.check_account(username=user, password=passw):
-                session["user"]=user  # get username and save in session then go to dashboard
+            if current_account.check_password(password=passw):
+                session["user"]="admin" # get username and save in session then go to dashboard
                 flash("you have logged-in successfuly")
                 return redirect(url_for("dashboard")) #if user was found go to Dashboared
             else:
-                flash("wrong username or password", "error")
+                flash("wrong password", "error")
                 return redirect(url_for("login"))
         else:
             # Flash all validation errors
@@ -92,8 +91,7 @@ def login():
 @app.route("/dashboard")
 def dashboard():
     if "user" in session: 
-        user = session["user"]
-        return render_template("dashboard.html",username= user, num_of_users = users.query.count(), num_of_entries = entries.query.count(), num_of_alerts = entries.query.filter_by(accepted=False).count())
+        return render_template("dashboard.html", num_of_users = users.query.count(), num_of_entries = entries.query.count(), num_of_alerts = entries.query.filter_by(accepted=False).count())
     else:
         return redirect(url_for("login"))
 
@@ -180,15 +178,14 @@ def updateSettings():
             
             form = AccountForm(request.form)
             if form.validate():#to validate input
-                new_username = request.form["username"]
                 new_password = request.form["password"]
-                if current_account.check_account(username=new_username, password=new_password):
-                    flash("username and password are the same","info")
+                if current_account.check_password(password=new_password):
+                    flash("you cant use the same password","info")
                     return redirect(request.referrer)
 
                 
-                current_account.update_account(username=new_username, password=new_password) #updates account info
-                flash("Username and Password have been updated successfuly")
+                current_account.set_password(password=new_password) #updates account info
+                flash("Password have been updated successfuly")
                 session.pop("user",None)#exit session
                 return redirect(url_for("login"))
             else:
