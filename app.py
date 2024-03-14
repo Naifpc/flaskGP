@@ -167,10 +167,14 @@ def download(upload_id):
     upload = users.query.filter_by(user_id=upload_id).first()
     return send_file(BytesIO(upload.image), mimetype='image/jpg')
 
-@app.route("/updateAcount", methods=["POST", "GET"]) #update username and password 
-def updateAcount():
+@app.route("/updateSettings", methods=["POST", "GET"]) #update username and password 
+def updateSettings():
     if "user" in session:
         if request.method == "POST":
+            new_theme = request.form["theme"]
+            if new_theme != session['theme']: 
+                return redirect(url_for("setTheme",set_theme=new_theme))
+            
             form = AccountForm(request.form)
             if form.validate():#to validate input
                 new_username = request.form["username"]
@@ -178,6 +182,8 @@ def updateAcount():
                 if current_account.check_account(username=new_username, password=new_password):
                     flash("username and password are the same","info")
                     return redirect(request.referrer)
+
+                
                 current_account.update_account(username=new_username, password=new_password) #updates account info
                 flash("Username and Password have been updated successfuly")
                 session.pop("user",None)#exit session
@@ -191,10 +197,11 @@ def updateAcount():
     else:
         return redirect(url_for("login"))
     
-@app.route('/set_theme/<settheme>')
-def set_theme(settheme):
-    session['theme'] = settheme
-    return redirect(request.referrer)  
+@app.route('/setTheme/<set_theme>')
+def setTheme(set_theme):
+    session['theme'] = set_theme 
+    return redirect(request.referrer)
+    
         
 if __name__ == "__main__":
     with app.app_context():
