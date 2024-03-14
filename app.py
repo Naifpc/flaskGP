@@ -58,6 +58,7 @@ def generate_frames():
 current_account= account() #create instance of account
 
 
+
 @app.route("/")
 def index():
     return render_template("login.html")  # Go to login by default
@@ -170,6 +171,8 @@ def download(upload_id):
 @app.route("/updateSettings", methods=["POST", "GET"]) #update username and password 
 def updateSettings():
     if "user" in session:
+        if "theme" not in session:
+            session['theme'] = "light" #light theme is default
         if request.method == "POST":
             new_theme = request.form["theme"]
             if new_theme != session['theme']: 
