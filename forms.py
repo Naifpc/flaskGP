@@ -9,7 +9,7 @@ class AccountForm(Form):
     submit = SubmitField('Submit')
 class UserForm(Form):
     username = StringField('Username', [
-        validators.Length(min=3, max=25),
+        validators.Length(min=3, max=32),
         validators.InputRequired(),
         validators.Regexp('^[a-zA-Z]+$', message="Username must contain only letters.")
     ])

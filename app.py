@@ -3,8 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 from io import BytesIO
 import cv2
-from account import *
 from forms import UserForm, AccountForm
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 
@@ -15,13 +15,13 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.permanent_session_lifetime = timedelta(hours=1) #keep session for one day
 
-#databasecode
+############################(DATABASE CODE)####################################
 db = SQLAlchemy(app)
 
 
 class users(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
+    name = db.Column(db.String(32))
     image = db.Column(db.LargeBinary)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
@@ -30,7 +30,13 @@ class users(db.Model):
         self.name = name
         self.image = image
 
+class account(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    password = db.Column(db.String(25), nullable=False)
 
+    def __init__(self, password):
+        self.password = password
+  
 class entries(db.Model):
     entrie_number = db.Column(db.Integer, primary_key=True)
     time = db.Column(db.DateTime, default=datetime.now)
@@ -39,10 +45,8 @@ class entries(db.Model):
 
     def __init__(self, user_id):
         self.user_id = user_id
- 
 
-    
-
+############################(CAMERA CODE)####################################
 
 def generate_frames():
     while True:
@@ -55,25 +59,28 @@ def generate_frames():
         yield(b' -- frame\r\n'
                     b'Content-Type: image/jpg\r\n\r\n' + frame + b'\r\n')#we use yield instade of return becuse return will end the loop
         
-current_account= Account(password="Admin") #create instance of account
 
+############################(APP CODE)####################################
 
 
 @app.route("/")
 def index():
-    return render_template("login.html")  # Go to login by default
+    return redirect(url_for("login"))  # Go to login by default
 
 @app.route("/login", methods=["POST","GET"])
 def login():
-    if "user" in session:
+    found_account =  account.query.all()
+    if not found_account:
+        return redirect(url_for("register")) #if there is no account go register   
+    elif "user" in session:
         return redirect(url_for("dashboard")) #if user already in Session go to Dashboared
-    
     elif request.method == "POST":
         form = AccountForm(request.form)
         if form.validate():#to validate input
-            passw = request.form["password"]
-            if current_account.check_password(password=passw):
-                session["user"]="admin" # get username and save in session then go to dashboard
+            password_input = request.form["password"]
+            check_password=account.query.filter_by(password=password_input).first() 
+            if check_password:
+                session["user"]="admin" #save in session 
                 flash("you have logged-in successfuly")
                 return redirect(url_for("dashboard")) #if user was found go to Dashboared
             else:
@@ -87,7 +94,33 @@ def login():
             return redirect(url_for("login"))
     else:
         return render_template("login.html") 
-
+    
+@app.route("/register", methods=["POST","GET"])
+def register():
+    found_account =  account.query.all()
+    if found_account:
+        return redirect(url_for("login")) #if there is no account go register   
+    elif "user" in session:
+        return redirect(url_for("dashboard")) #if user already in Session go to Dashboared
+    elif request.method == "POST":
+        form = AccountForm(request.form)
+        if form.validate():#to validate input
+            password_input = request.form["password"]
+            new_password = account(password_input)
+            db.session.add(new_password)
+            db.session.commit()
+            session["user"]="admin" #save in session 
+            flash("you have registered successfuly")
+            return redirect(url_for("dashboard")) #if user was found go to Dashboared
+        else:
+            # Flash all validation errors
+            for field, errors in form.errors.items():
+                for error in errors:
+                    flash(f"{getattr(form, field).label.text}: {error}", "error")
+            return redirect(url_for("register"))
+    else:
+        return render_template("register.html")
+    
 @app.route("/dashboard")
 def dashboard():
     if "user" in session: 
@@ -175,16 +208,16 @@ def updateSettings():
             new_theme = request.form["theme"]
             if new_theme != session['theme']: 
                 return redirect(url_for("setTheme",set_theme=new_theme))
-            
             form = AccountForm(request.form)
             if form.validate():#to validate input
                 new_password = request.form["password"]
-                if current_account.check_password(password=new_password):
+                check_password=account.query.filter_by(password=new_password).first() 
+                if check_password:
                     flash("you cant use the same password","info")
                     return redirect(request.referrer)
-
-                
-                current_account.set_password(password=new_password) #updates account info
+                old_password=account.query.filter_by(id=1).first()
+                old_password.password = new_password
+                db.session.commit()
                 flash("Password have been updated successfuly")
                 session.pop("user",None)#exit session
                 return redirect(url_for("login"))

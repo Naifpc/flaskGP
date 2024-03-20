@@ -78,34 +78,34 @@
     </div>
   </div>
 
-
-
-
-  <!-- flash messeges -->
   <div class="content">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    {% for category, msg in messages %}
-    {% if category == 'error' %}
-    <div class="alert alert-danger alert-dismissible fade show flash-messages" role="alert">
-      <i class="bi bi-exclamation-triangle "></i> {{msg}}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    {% elif category == 'info' %}
-    <div class="alert alert-info alert-dismissible fade show flash-messages" role="alert">
-      <i class="bi bi-info-circle"></i> {{msg}}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    {% else %}
-    <div class="alert alert-success alert-dismissible fade show flash-messages" role="alert">
-      <i class="bi bi-check-circle"></i> {{msg}}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    {% endif %}
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
     <!-- Page content -->
+    {% block title %}{% endblock %}
+    <div class="container-title ">
+      <!-- flash messeges -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      {% for category, msg in messages %}
+      {% if category == 'error' %}
+      <div class="alert alert-danger alert-dismissible fade show flash-messages" role="alert">
+          <i class="bi bi-exclamation-triangle"></i> {{msg}}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      {% elif category == 'info' %}
+      <div class="alert alert-info alert-dismissible fade show flash-messages" role="alert">
+          <i class="bi bi-info-circle"></i> {{msg}}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      {% else %}
+      <div class="alert alert-success alert-dismissible fade show flash-messages" role="alert">
+          <i class="bi bi-check-circle"></i> {{msg}}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      {% endif %}
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+  </div>
     {% block body %}{% endblock %}
   </div>
 
