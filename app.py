@@ -8,9 +8,6 @@ import bcrypt
 from bcrypt import checkpw
 
 
-
-
-
 app = Flask(__name__)
 camera=cv2.VideoCapture(0)
 app.secret_key = "graduate"
@@ -20,8 +17,6 @@ app.permanent_session_lifetime = timedelta(hours=1) #keep session for one day
 
 ############################(DATABASE CODE)####################################
 db = SQLAlchemy(app)
-
-
 class users(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32))
@@ -45,8 +40,6 @@ class account(db.Model):
 
     def check_password(self, password):
         return bcrypt.checkpw(password.encode('utf-8'), self.password_hash.encode('utf-8'))
-
-  
 class entries(db.Model):
     entrie_number = db.Column(db.Integer, primary_key=True)
     time = db.Column(db.DateTime, default=datetime.now)
@@ -68,11 +61,7 @@ def generate_frames():
             frame=buffer.tobytes()#convert buffer to frames
         yield(b' -- frame\r\n'
                     b'Content-Type: image/jpg\r\n\r\n' + frame + b'\r\n')#we use yield instade of return becuse return will end the loop
-        
-
 ############################(APP CODE)####################################
-
-
 @app.route("/")
 def index():
     return redirect(url_for("login"))  # Go to login by default
