@@ -4,7 +4,10 @@ from datetime import datetime, timedelta
 from io import BytesIO
 import cv2
 from forms import UserForm, AccountForm
-from werkzeug.security import generate_password_hash, check_password_hash
+import bcrypt
+from bcrypt import checkpw
+
+
 
 
 
@@ -32,10 +35,17 @@ class users(db.Model):
 
 class account(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    password = db.Column(db.String(25), nullable=False)
+    password_hash = db.Column(db.String(128), nullable=False)
 
     def __init__(self, password):
-        self.password = password
+        self.set_password(password)# use set_password to hash the password enterd by the user
+
+    def set_password(self, password):
+        self.password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
+    def check_password(self, password):
+        return bcrypt.checkpw(password.encode('utf-8'), self.password_hash.encode('utf-8'))
+
   
 class entries(db.Model):
     entrie_number = db.Column(db.Integer, primary_key=True)
@@ -69,20 +79,20 @@ def index():
 
 @app.route("/login", methods=["POST","GET"])
 def login():
-    found_account =  account.query.all()
+    found_account = account.query.all()
     if not found_account:
-        return redirect(url_for("register")) #if there is no account go register   
+        return redirect(url_for("register"))  # if there is no account go register
     elif "user" in session:
-        return redirect(url_for("dashboard")) #if user already in Session go to Dashboared
+        return redirect(url_for("dashboard"))  # if user already in Session go to Dashboard
     elif request.method == "POST":
         form = AccountForm(request.form)
-        if form.validate():#to validate input
+        if form.validate():  # to validate input
             password_input = request.form["password"]
-            check_password=account.query.filter_by(password=password_input).first() 
-            if check_password:
-                session["user"]="admin" #save in session 
+            user_account = account.query.first()
+            if user_account and checkpw(password_input.encode('utf-8'), user_account.password_hash.encode('utf-8')):
+                session["user"] = "admin"  # save in session
                 flash("you have logged-in successfuly")
-                return redirect(url_for("dashboard")) #if user was found go to Dashboared
+                return redirect(url_for("dashboard"))  # if user was found go to Dashboard
             else:
                 flash("wrong password", "error")
                 return redirect(url_for("login"))
@@ -93,13 +103,14 @@ def login():
                     flash(f"{getattr(form, field).label.text}: {error}", "error")
             return redirect(url_for("login"))
     else:
-        return render_template("login.html") 
+        return render_template("login.html")
+
     
 @app.route("/register", methods=["POST","GET"])
 def register():
     found_account =  account.query.all()
     if found_account:
-        return redirect(url_for("login")) #if there is no account go register   
+        return redirect(url_for("login")) #if there is account go login   
     elif "user" in session:
         return redirect(url_for("dashboard")) #if user already in Session go to Dashboared
     elif request.method == "POST":
