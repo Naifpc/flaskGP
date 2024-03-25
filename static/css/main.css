@@ -132,7 +132,6 @@
 @media (max-width: 1100px) {
   .sidebar {
     width: 25%; /* Change the sidebar width to 100% on smaller screens */
-    min-width: 0; /* Reset the min-width */
     position: relative; /* Change position to relative to remove fixed positioning */
     height: auto; /* Allow sidebar to adjust height based on content */
     overflow-y: visible; /* Allow sidebar content to overflow */
