@@ -1,3 +1,5 @@
+#graduatioation project: Enter Face
+#semester 452
 from flask import Flask, render_template, url_for, request, redirect,session,send_file,Response,flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
@@ -194,7 +196,7 @@ def deleteUser():
             db.session.commit()
         return redirect(url_for("registerdUsers"))
     
-@app.route('/download/<upload_id>')
+@app.route('/download/<upload_id>') #to return image from data base
 def download(upload_id):
     upload = users.query.filter_by(user_id=upload_id).first()
     return send_file(BytesIO(upload.image), mimetype='image/jpg')
