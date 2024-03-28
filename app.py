@@ -212,17 +212,19 @@ def updateSettings():
                 return redirect(url_for("setTheme",set_theme=new_theme))
             form = AccountForm(request.form)
             if form.validate():#to validate input
-                new_password = request.form["password"]
-                check_password=account.query.filter_by(password=new_password).first() 
-                if check_password:
+                password_input = request.form["password"]
+                new_password = account(password_input)
+                user_account = account.query.first()
+                if user_account and checkpw(password_input.encode('utf-8'), user_account.password_hash.encode('utf-8')):
                     flash("you cant use the same password","info")
                     return redirect(request.referrer)
-                old_password=account.query.filter_by(id=1).first()
-                old_password.password = new_password
-                db.session.commit()
-                flash("Password have been updated successfuly")
-                session.pop("user",None)#exit session
-                return redirect(url_for("login"))
+                else:
+                    db.session.delete(user_account)
+                    db.session.add(new_password)
+                    db.session.commit()
+                    flash("Password have been updated successfuly")
+                    session.pop("user",None)#exit session
+                    return redirect(url_for("login"))
             else:
                 # Flash all validation errors
                 for field, errors in form.errors.items():
