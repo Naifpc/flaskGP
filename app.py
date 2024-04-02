@@ -3,7 +3,7 @@
 from flask import Flask, render_template, url_for, request, redirect,session,send_file,Response,flash
 from datetime import timedelta
 from io import BytesIO
-from forms import UserForm, AccountForm
+from forms import UserForm, AccountForm,AccountFormUpdate
 from bcrypt import checkpw
 from db import Users,Account,Entries,db
 from camera import generate_frames
@@ -156,21 +156,26 @@ def download(upload_id):
 @app.route("/updateSettings", methods=["POST", "GET"]) #update username and password 
 def updateSettings():
     if "user" in session:
-            form = AccountForm(request.form)
+            form = AccountFormUpdate(request.form)
             if form.validate():#to validate input
-                password_input = request.form["password"]
-                new_password = Account(password_input)
+                current_password= request.form["current_password"]
                 user_account = Account.query.first()
-                if user_account and checkpw(password_input.encode('utf-8'), user_account.password_hash.encode('utf-8')):
-                    flash("you cant use the same password","info")
-                    return redirect(request.referrer)
+                if user_account and checkpw(current_password.encode('utf-8'), user_account.password_hash.encode('utf-8')):
+                    new_password_input = request.form["new_password"]
+                    new_password = Account(new_password_input)
+                    if user_account and checkpw(new_password_input.encode('utf-8'), user_account.password_hash.encode('utf-8')):
+                        flash("you cant use the same password","info")
+                        return redirect(request.referrer)
+                    else:
+                        db.session.delete(user_account)
+                        db.session.add(new_password)
+                        db.session.commit()
+                        flash("Password have been updated successfuly")
+                        session.pop("user",None)#exit session
+                        return redirect(url_for("login"))
                 else:
-                    db.session.delete(user_account)
-                    db.session.add(new_password)
-                    db.session.commit()
-                    flash("Password have been updated successfuly")
-                    session.pop("user",None)#exit session
-                    return redirect(url_for("login"))
+                    flash("invalid current password","error")
+                    return redirect(request.referrer)
             else:
                 # Flash all validation errors
                 for field, errors in form.errors.items():
