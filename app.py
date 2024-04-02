@@ -156,12 +156,6 @@ def download(upload_id):
 @app.route("/updateSettings", methods=["POST", "GET"]) #update username and password 
 def updateSettings():
     if "user" in session:
-        if "theme" not in session:
-            session['theme'] = "light" #light theme is default
-        if request.method == "POST":
-            new_theme = request.form["theme"]
-            if new_theme != session['theme']: 
-                return redirect(url_for("setTheme",set_theme=new_theme))
             form = AccountForm(request.form)
             if form.validate():#to validate input
                 password_input = request.form["password"]

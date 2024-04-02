@@ -31,12 +31,25 @@
       href="{{url_for('history')}}"><i class="bi bi-clock-history"></i> History</a>
     <a class="sidebtn text-body {% if request.endpoint == 'newUser' %}active{% endif %}"
       href="{{url_for('newUser')}}"><i class="bi bi-person-add"></i> New user</a>
-    <div class="d-flex bot-buttons">
-      <button class="sittings-btn btn btn-outline-secondary" data-toggle="modal" data-target=".settings"><i
+    <div class="bot-buttons">
+    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+      <button type="button" class="btn btn-primary"data-toggle="modal" data-target=".settings"><i
         class="bi bi-gear"></i></button>
-      <button class="logout-btn btn btn-outline-danger" data-toggle="modal" data-target=".bs-example-modal-sm"><i
-          class="bi bi-box-arrow-right"></i> Logout</button>
+      <button type="button" class="btn btn-primary"data-toggle="modal" data-target=".bs-example-modal-sm"><i
+        class="bi bi-box-arrow-right"></i></button>
+    
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+          theeme
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item text-body fs-6" href="{{ url_for('setTheme', set_theme='light') }}"><i class="bi bi-brightness-high"></i> light</a></li>
+          <li><a class="dropdown-item text-body fs-6" href="{{ url_for('setTheme', set_theme='dark') }}"><i class="bi bi-moon"></i> dark</a></li>
+      </ul>      
+      </div>
     </div>
+  </div>
+
   </div>
 
   <!-- logout modal -->
@@ -61,15 +74,12 @@
         </div>
         <div class="modal-body"><i class="fa fa-question-circle"></i>
           <h6>Update acount info: </h6>
+          <input type="password" class="form-control shadow-sm " id="inputPassword3" name="current_password"
+          placeholder="current password">
+          <br>
           <form action="{{url_for('updateSettings')}}" method="post">
-            <input type="password" class="form-control shadow-sm " id="inputPassword3" name="password"
+            <input type="password" class="form-control shadow-sm " id="inputPassword3" name="new_password"
               placeholder="new password">
-            <br>
-            <h6>Themes:</h6>
-            <select name="theme" class="form-select shadow-sm">
-              <option value="light"><i class="bi bi-brightness-high"></i> light</option>
-              <option value="dark"><i class="bi bi-moon"></i> dark</option>
-            </select>
         </div>
 
         <div class="modal-footer">
