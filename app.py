@@ -16,12 +16,6 @@ db.init_app(app)
 app.secret_key = "graduate"
 app.permanent_session_lifetime = timedelta(hours=1) #keep session for one day
 
-
-
-############################(CAMERA CODE)####################################
-
-
-############################(APP CODE)####################################
 @app.route("/")
 def index():
     return redirect(url_for("login"))  # Go to login by default
