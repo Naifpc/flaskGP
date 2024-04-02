@@ -1,68 +1,26 @@
 #graduatioation project: Enter Face
 #semester 452
 from flask import Flask, render_template, url_for, request, redirect,session,send_file,Response,flash
-from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime, timedelta
+from datetime import timedelta
 from io import BytesIO
-import cv2
 from forms import UserForm, AccountForm
-import bcrypt
 from bcrypt import checkpw
+from db import Users,Account,Entries,db
+from camera import generate_frames
 
 
 app = Flask(__name__)
-camera=cv2.VideoCapture(0)
-app.secret_key = "graduate"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db.init_app(app)
+app.secret_key = "graduate"
 app.permanent_session_lifetime = timedelta(hours=1) #keep session for one day
 
-############################(DATABASE CODE)####################################
-db = SQLAlchemy(app)
-class users(db.Model):
-    user_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(32))
-    image = db.Column(db.LargeBinary)
-    created_at = db.Column(db.DateTime, default=datetime.now)
 
-
-    def __init__(self, name, image):
-        self.name = name
-        self.image = image
-
-class account(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    password_hash = db.Column(db.String(128), nullable=False)
-
-    def __init__(self, password):
-        self.set_password(password)# use set_password to hash the password enterd by the user
-
-    def set_password(self, password):
-        self.password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-
-    def check_password(self, password):
-        return bcrypt.checkpw(password.encode('utf-8'), self.password_hash.encode('utf-8'))
-class entries(db.Model):
-    entrie_number = db.Column(db.Integer, primary_key=True)
-    time = db.Column(db.DateTime, default=datetime.now)
-    accepted= db.Column(db.Boolean, default=True)
-    user_id = db.Column( db.Integer, db.ForeignKey('users.user_id'))
-
-    def __init__(self, user_id):
-        self.user_id = user_id
 
 ############################(CAMERA CODE)####################################
 
-def generate_frames():
-    while True:
-        success,frame=camera.read() #reads camera frame
-        if not success:
-            break
-        else:
-            ret,buffer=cv2.imencode('.jpg',frame)#incode image into memory buffer
-            frame=buffer.tobytes()#convert buffer to frames
-        yield(b' -- frame\r\n'
-                    b'Content-Type: image/jpg\r\n\r\n' + frame + b'\r\n')#we use yield instade of return becuse return will end the loop
+
 ############################(APP CODE)####################################
 @app.route("/")
 def index():
@@ -70,7 +28,7 @@ def index():
 
 @app.route("/login", methods=["POST","GET"])
 def login():
-    found_account = account.query.all()
+    found_account = Account.query.all()
     if not found_account:
         return redirect(url_for("register"))  # if there is no account go register
     elif "user" in session:
@@ -79,7 +37,7 @@ def login():
         form = AccountForm(request.form)
         if form.validate():  # to validate input
             password_input = request.form["password"]
-            user_account = account.query.first()
+            user_account = Account.query.first()
             if user_account and checkpw(password_input.encode('utf-8'), user_account.password_hash.encode('utf-8')):
                 session["user"] = "admin"  # save in session
                 flash("you have logged-in successfuly")
@@ -99,7 +57,7 @@ def login():
     
 @app.route("/register", methods=["POST","GET"])
 def register():
-    found_account =  account.query.all()
+    found_account =  Account.query.all()
     if found_account:
         return redirect(url_for("login")) #if there is account go login   
     elif "user" in session:
@@ -108,7 +66,7 @@ def register():
         form = AccountForm(request.form)
         if form.validate():#to validate input
             password_input = request.form["password"]
-            new_password = account(password_input)
+            new_password = Account(password_input)
             db.session.add(new_password)
             db.session.commit()
             session["user"]="admin" #save in session 
@@ -126,21 +84,21 @@ def register():
 @app.route("/dashboard")
 def dashboard():
     if "user" in session: 
-        return render_template("dashboard.html", num_of_users = users.query.count(), num_of_entries = entries.query.count(), num_of_alerts = entries.query.filter_by(accepted=False).count())
+        return render_template("dashboard.html", num_of_users = Users.query.count(), num_of_entries = Entries.query.count(), num_of_alerts = Entries.query.filter_by(accepted=False).count())
     else:
         return redirect(url_for("login"))
 
 @app.route("/registerdUsers")
 def registerdUsers():
     if "user" in session: 
-        return render_template("registerdUsers.html",values = users.query.all())
+        return render_template("registerdUsers.html",values = Users.query.all())
     else:
         return redirect(url_for("login"))
 
 @app.route("/history")
 def history():
     if "user" in session:
-        return render_template("history.html",values = entries.query.all())
+        return render_template("history.html",values = Entries.query.all())
     else:
         return redirect(url_for("login"))
     
@@ -154,11 +112,11 @@ def newUser():
                 file = request.files["file"]
                 image= file.read()
 
-                found_user =  users.query.filter_by(name=user).first() 
+                found_user =  Users.query.filter_by(name=user).first() 
                 if found_user:
                     flash("user already exists", "info")
                 else:
-                    new_user = users(user, image)
+                    new_user = Users(user, image)
                     db.session.add(new_user)
                     db.session.commit() #if user not found then add new user to data base db
                     flash("user  have been added successfuly")
@@ -190,7 +148,7 @@ def logout():
 def deleteUser():
     if request.method == "POST":
         user = request.form["delete"]
-        user_to_delete = users.query.filter_by(name=user).first()
+        user_to_delete = Users.query.filter_by(name=user).first()
         if user_to_delete:
             db.session.delete(user_to_delete)
             db.session.commit()
@@ -198,7 +156,7 @@ def deleteUser():
     
 @app.route('/download/<upload_id>') #to return image from data base
 def download(upload_id):
-    upload = users.query.filter_by(user_id=upload_id).first()
+    upload = Users.query.filter_by(user_id=upload_id).first()
     return send_file(BytesIO(upload.image), mimetype='image/jpg')
 
 @app.route("/updateSettings", methods=["POST", "GET"]) #update username and password 
@@ -213,8 +171,8 @@ def updateSettings():
             form = AccountForm(request.form)
             if form.validate():#to validate input
                 password_input = request.form["password"]
-                new_password = account(password_input)
-                user_account = account.query.first()
+                new_password = Account(password_input)
+                user_account = Account.query.first()
                 if user_account and checkpw(password_input.encode('utf-8'), user_account.password_hash.encode('utf-8')):
                     flash("you cant use the same password","info")
                     return redirect(request.referrer)
