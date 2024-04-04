@@ -31,8 +31,8 @@
       href="{{url_for('history')}}"><i class="bi bi-clock-history"></i> History</a>
     <a class="sidebtn text-body {% if request.endpoint == 'newUser' %}active{% endif %}"
       href="{{url_for('newUser')}}"><i class="bi bi-person-add"></i> New user</a>
-    <div class="bot-buttons">
-      <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+    
+      <div class="bot-buttons">
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".settings" title="settings"><i
             class="bi bi-gear"></i></button>
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm"
@@ -49,7 +49,6 @@
                   class="bi bi-moon"></i> dark</a></li>
           </ul>
         </div>
-      </div>
     </div>
 
   </div>
