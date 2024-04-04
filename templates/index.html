@@ -33,19 +33,19 @@
       href="{{url_for('newUser')}}"><i class="bi bi-person-add"></i> New user</a>
 
     <div class="bot-buttons d-flex">
-      <button type="button" class="btn btn-primary bot-btn m-1" data-toggle="modal" data-target=".settings"
+      <button type="button" class="btn btn-primary bot-btn m-2" data-toggle="modal" data-target=".settings"
         title="settings"><i class="bi bi-gear"></i></button>
         {% if session['theme'] == 'light' %}
-        <a type="button" class="btn btn-primary bot-btn m-1 d-flex justify-content-center align-items-center"
+        <a type="button" class="btn btn-primary bot-btn m-2 d-flex justify-content-center align-items-center"
           href="{{ url_for('setTheme', set_theme='dark') }}" role="button" title="siwtch to dark theme"><i class="bi bi-moon"></i></a>
         {% elif session['theme'] == 'dark' %}
-        <a type="button" class="btn btn-primary bot-btn m-1 d-flex justify-content-center align-items-center"
+        <a type="button" class="btn btn-primary bot-btn m-2 d-flex justify-content-center align-items-center"
           href="{{ url_for('setTheme', set_theme='light') }}" role="button" title="siwtch to light theme"><i class="bi bi-brightness-high"></i></a>
         {% else %}
-        <a type="button" class="btn btn-primary bot-btn m-1 d-flex justify-content-center align-items-center"
+        <a type="button" class="btn btn-primary bot-btn m-2 d-flex justify-content-center align-items-center"
           href="{{ url_for('setTheme', set_theme='dark') }}" role="button" title="siwtch to dark theme"><i class="bi bi-moon"></i></a>
         {% endif %}
-      <button type="button" class="btn btn-primary bot-btn m-1" data-toggle="modal" data-target=".bs-example-modal-sm"
+      <button type="button" class="btn btn-primary bot-btn m-2" data-toggle="modal" data-target=".bs-example-modal-sm"
         title="logout"><i class="bi bi-box-arrow-right"></i></button>
 
       
