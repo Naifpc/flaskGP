@@ -24,7 +24,7 @@ class UserForm(Form):
     username = StringField('Username', [
         validators.Length(min=3, max=32),
         validators.InputRequired(),
-        validators.Regexp('^[a-zA-Z]+$', message="Username must contain only letters.")
+        validators.Regexp('^[a-zA-Z]+( [a-zA-Z]+)*$', message="Username must contain only letters and no empty spaces.")
     ])
     image = FileField("File")
     submit = SubmitField('Submit')

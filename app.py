@@ -1,4 +1,4 @@
-#graduatioation project: Enter Face
+#graduation project: Enter Face
 #semester 452
 from flask import Flask, render_template, url_for, request, redirect,session,send_file,Response,flash
 from datetime import timedelta
