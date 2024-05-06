@@ -4,6 +4,7 @@ import bcrypt
 
 db = SQLAlchemy()
 
+
 class Users(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32))

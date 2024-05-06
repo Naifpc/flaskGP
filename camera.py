@@ -1,6 +1,7 @@
 import cv2
 camera=cv2.VideoCapture(0)
 
+
 def generate_frames():
     while True:
         success,frame=camera.read() #reads camera frame

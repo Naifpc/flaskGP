@@ -1,5 +1,6 @@
 from wtforms import Form, StringField, PasswordField, validators, SubmitField,FileField
 
+
 class AccountForm(Form):
     password = PasswordField('Password', [
         validators.Length(min=4, max=25, message="Password must be between 4 and 25 characters long."),
